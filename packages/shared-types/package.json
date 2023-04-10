@@ -1,0 +1,23 @@
+{
+  "name": "shared-types",
+  "private": true,
+  "version": "0.0.0",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    "require": "./dist/cjs/index.js",
+    "import": "./dist/esm/index.js",
+    "default": "./dist/esm/index.js"
+  },
+  "scripts": {
+    "build": "tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json"
+  },
+  "devDependencies": {
+    "typescript": "5.0.4",
+    "zod": "^3.21.4"
+  },
+  "nx": {
+    "tags": [
+      "scope:shared"
+    ]
+  }
+}

@@ -13,5 +13,15 @@
         ]
       }
     }
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*"],
+    "production": ["!{projectRoot}/**/*.spec.tsx"]
+  },
+  "targetDefaults": {
+    "build": {
+      "inputs": ["production", "^production"],
+      "dependsOn": ["^build"]
+    }
   }
 }
