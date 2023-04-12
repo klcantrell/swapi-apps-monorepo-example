@@ -2,7 +2,11 @@
   "name": "swapi-apps-monorepo-example",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "dev:backend": "nx run backend:start:dev",
+    "dev:frontend": "nx run frontend:dev -- --port 3001",
+    "build:all": "nx run-many --targets=lint,build"
+  },
   "private": true,
   "devDependencies": {
     "@nrwl/eslint-plugin-nx": "^15.9.2",

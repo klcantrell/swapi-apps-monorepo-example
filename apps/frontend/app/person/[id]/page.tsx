@@ -8,7 +8,6 @@ import {
 } from "shared-types";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,17 +50,7 @@ async function getPersonHomeworld(id: string) {
   return getData<Planet>(`http://localhost:3000/api/people/${id}/homeworld`);
 }
 
-export const getServerSideProps: GetServerSideProps<
-  {
-    person: StarWarsPerson;
-    species: Species[];
-    movies: Film[];
-    vehicles: Vehicle[];
-    starships: Starship[];
-    homeworld: Planet;
-  },
-  { id: string }
-> = async ({ params }) => {
+export default async function Person({ params }: { params: { id: string } }) {
   const personRequest = getPerson(params!.id);
   const speciesRequests = getPersonSpecies(params!.id);
   const filmsRequests = getPersonMovies(params!.id);
@@ -80,31 +69,11 @@ export const getServerSideProps: GetServerSideProps<
 
   const person = allData[0];
   const species = allData[1];
-  const films = allData[2];
+  const movies = allData[2];
   const vehicles = allData[3];
   const starships = allData[4];
   const homeworld = allData[5];
 
-  return {
-    props: {
-      person,
-      species,
-      movies: films,
-      vehicles,
-      starships,
-      homeworld,
-    },
-  };
-};
-
-export default function Person({
-  person,
-  homeworld,
-  species,
-  movies,
-  vehicles,
-  starships,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <main className={styles.mainPerson}>
       <h1 className={inter.className}>{person.name}</h1>

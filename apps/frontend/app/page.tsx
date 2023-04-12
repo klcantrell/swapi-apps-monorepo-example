@@ -1,21 +1,19 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import Link from "next/link";
+import Image from 'next/image';
+import { Inter } from 'next/font/google';
+import Link from 'next/link';
 
-import styles from "@/styles/Home.module.css";
+import styles from '@/styles/Home.module.css';
 import {
   StarWarsPeople,
   getPersonIdFromUrl,
-} from "shared-types";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+} from 'shared-types';
+import InvalidateCache from '@/components/InvalidateCache';
 
 const inter = Inter({ subsets: ["latin"] });
 const maxPage = 5;
 const minPage = 1;
 
-export const getServerSideProps: GetServerSideProps<{
-  people: StarWarsPeople;
-}> = async () => {
+async function getPeople() {
   const response = await fetch(
     `http://localhost:3000/api/people?page=${Math.floor(
       Math.random() * (maxPage - minPage) + minPage
@@ -26,18 +24,16 @@ export const getServerSideProps: GetServerSideProps<{
     throw Error("Yikes, we ran into some trouble. Try again, please");
   }
 
-  return {
-    props: {
-      people: StarWarsPeople.parse(await response.json()),
-    },
-  };
+  return StarWarsPeople.parse(await response.json())
 };
 
-export default function Home({
-  people,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default async function Home() {
+  const people = await getPeople();
+
   return (
     <main className={styles.mainHome}>
+      <InvalidateCache />
+
       <div className={styles.description}>
         <p>
           Get started by editing&nbsp;
